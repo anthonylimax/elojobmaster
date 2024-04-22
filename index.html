@@ -5,46 +5,359 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  
 </head>
 
 <body>
-  <select onchange="HandleValueToPayForJob()" name="eloToStart" id="eloToStart">
-    <option value="1">ferro</option>
-    <option value="5">bronze</option>
-    <option value="9">prata</option>
-    <option value="13">ouro</option>
-    <option value="17">platina</option>
-    <option value="21">esmeralda</option>
-    <option value="25">diamente</option>
-    <option value="29">mestre</option>
-    <option value="30">grao-mestre</option>
-    <option value="31">challenger</option>
-  </select>
-  <select onchange="HandleValueToPayForJob()" name="divisionToStart" id="divisionToStart">
-    <option value="0">IV</option>
-    <option value="1">III</option>
-    <option value="2">II</option>
-    <option value="3">I</option>
-  </select>
-  <select onchange="HandleValueToPayForJob()" name="eloToEnd" id="eloToEnd">
-    <option value="0">ferro</option>
-    <option value="4">bronze</option>
-    <option value="8">prata</option>
-    <option value="12">ouro</option>
-    <option value="16">platina</option>
-    <option value="20">esmeralda</option>
-    <option value="24">diamente</option>
-    <option value="28">mestre</option>
-    <option value="29">grao-mestre</option>
-    <option value="30">challenger</option>
-  </select>
-  <select onchange="HandleValueToPayForJob()" name="divisionToEnd" id="divisionToEnd">
-    <option value="0">IV</option>
-    <option value="1">III</option>
-    <option value="2">II</option>
-    <option value="3">I</option>
-  </select>
-  <span id="FinalValue">0</span>
+  <style>
+    @font-face {
+      font-family: "Tusker Grotesk";
+      src: url("./fonts/TuskerGrotesk-6700Bold.otf");
+      font-weight: 800;
+    }
+    .elo, .elo2{
+      width: 150px;
+      cursor: pointer;
+      gap: 5px;
+      height: 150px;
+      transition: 0.3s;
+      padding: 10px;
+      display: flex;
+      border-radius: 30px;
+      align-items: center;
+      box-shadow: 0px 0px 20px rgb(209, 209, 209);
+      flex-direction: column;
+    }
+    .container_division, .container_division2{
+      cursor: pointer;
+      height: 50px;
+      width: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.3s;
+      background-color: white;
+      border-radius: 50px;
+      box-shadow: 0px 0px 10px rgb(209, 209, 209);
+    }
+    .container_division__clicked, .container_division__clickedT{
+      background-color: #483D8B;
+      color: white;
+    }
+    .container_division:hover, .container_division2:hover{
+      background-color: #483D8B;
+      color: white;
+    }
+
+    .elo > img, .elo2 > img{
+      width: 100px;
+    }
+    .elo:hover, .elo2:hover{
+      background-color: #483D8B;
+      color: white;
+    }
+    .elo__clicked, .elo2__clicked{
+      
+      background-color: #483D8B;
+      color: white;
+    }
+    .grid_elos{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Tusker Grotesk', sans-serif;
+      letter-spacing: 2px;
+      font-size: 20px;
+      color: rgb(75, 75, 75);
+      font-weight: 400; 
+    }
+    .container_choose_your_elo_first, .container_choose_your_elo_second{
+      top: 0;
+      right: 0;
+      left: 0;
+      right : 0;
+      height: 100%;
+      position: fixed;
+      background-color:#00000050;
+      backdrop-filter: blur(3px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .choose_different_elos{
+      padding: 30px;
+      width: 90%;
+      min-height: 400px;
+      border-radius: 10px;
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+    }
+    .choose_different_elos > span{
+      font-size: 24px;
+      font-family: "Tusker Grotesk", sans-serif;
+      font-weight: 500;
+      color: rgb(44, 44, 44);
+    }
+    @font-face {
+      font-family: "Tusker Grotesk";
+      src: url("./fonts/TuskerGrotesk-4500Medium.otf");
+      font-weight: 500;
+    }
+    .container__embedded{
+      position: relative;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .container__embedded__elo::after{
+      content: "";
+      opacity: 0.4;
+      background-image: url("./images/edit_icon.png");
+      background-size: cover;
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+    .container__embedded__elo::before{
+      content: "";
+      
+      opacity: 0.4;
+      background-color: transparent;
+      border-radius: 50px;
+      border: 1px solid white;
+      background-size: cover;
+      width: 20px;
+      height: 20px;
+      padding: 5px;
+      position: absolute;
+      top: 13px;
+      right: 14px;
+    }
+    .container__embedded__elo{
+      height: 500px;
+      max-width: 400px;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      border-radius: 10px;
+      align-items: center;
+      padding-top: 20px;
+      width: 50vw;
+      display: flex;
+      transition: 0.3s;
+      flex-direction: column;
+    }
+    .select_your_elo{
+      color: white;
+      font-size: 18px;
+      font-family: 'Tusker Grotesk', sans-serif;
+      letter-spacing: 2px;
+      font-weight: 400;
+    }
+    .select{
+      width: 80%;
+      transition: 0.3s;
+      margin-bottom: 10px;
+      display: none;
+      border-radius: 10px;
+      border: none;
+      padding: 10px;
+    }
+    .container__embedded__elo > img{
+      width: 250px;
+      margin-bottom: 10px;
+      animation: AnimationElos 2s infinite ease-in-out;
+    }
+    @keyframes AnimationElos {
+      0%{
+        transform: translateY(0px);
+      }
+      50%{
+        transform: translateY(-10px);
+      }
+      100%{
+        transform: translateY(0px);
+      }
+    }
+    .container__elos{
+      display: flex;
+      gap: 20px;
+    }
+    .titulo__card{
+      font-weight: 700;
+      font-size: 36px;
+      margin-bottom: 10px;
+      font-family: 'Tusker Grotesk', sans-serif;
+      font-weight: 800;
+      color: white;
+      
+      letter-spacing: 2px;
+    }
+  </style>
+  <div class="container__embedded">
+    <div class="container__elos">
+      <div id="card1" onclick="OpenFirst()" class="container__embedded__elo">
+        <img id="elo1" src="images/prata.webp  " alt="">
+        <span class="select_your_elo">Selecione seu elo:</span>
+        <span class="titulo__card" id="titulo1">FERRO I</span>
+      <select onchange="HandleValueToPayForJob()" class="select" name="eloToStart" id="eloToStart">
+        
+        <option value="0">ferro</option>
+        <option value="4">bronze</option>
+        <option value="8">prata</option>
+        <option value="12">ouro</option>
+        <option value="16">platina</option>
+        <option value="20">esmeralda</option>
+        <option value="24">diamente</option>
+        <option value="28">mestre</option>
+        <option value="29">grao-mestre</option>
+      </select>
+      <select onchange="HandleValueToPayForJob()" class="select" name="divisionToStart" id="divisionToStart">
+        <option value="0">IV</option>
+        <option value="1">III</option>
+        <option value="2">II</option>
+        <option value="3">I</option>
+      </select>
+      </div>
+      <div id="card2" onclick="OpenSecond()" class="container__embedded__elo">
+        <img id="elo2" src="images/ferro.webp" alt="">
+        <span class="select_your_elo">Selecione seu elo:</span>
+        <span class="titulo__card" id="titulo2">FERRO I</span>
+        <select onchange="HandleValueToPayForJob()" class="select" name="eloToEnd" id="eloToEnd">
+          <option value="0">ferro</option>
+          <option value="4">bronze</option>
+          <option value="8">prata</option>
+          <option value="12">ouro</option>
+          <option value="16">platina</option>
+          <option value="20">esmeralda</option>
+          <option value="24">diamente</option>
+          <option value="28">mestre</option>
+          <option value="29">grao-mestre</option>
+          <option value="30">challenger</option>
+        </select>
+        <select onchange="HandleValueToPayForJob()" class="select" name="divisionToEnd" id="divisionToEnd">
+          <option value="0">IV</option>
+          <option value="1">III</option>
+          <option value="2">II</option>
+          <option value="3">I</option>
+        </select>
+      </div>
+    </div>
+    <span id="dont-have">NÃO HÁ COMO FAZER O SERVIÇO PARA UM ELO ABAIXO!</span>
+    <span id="FinalValue">0</span>
+  </div>
+  <div class="container_choose_your_elo_first">
+    <div class="choose_different_elos">
+      <span>Selecione o seu elo:</span>
+      <hr>
+      <div class="grid_elos">
+        <div data-value="0" class="elo">
+          <img src="images/ferro.webp" alt="">
+          <span>FERRO</span>
+        </div>
+        <div data-value="4" class="elo">
+          <img src="images/bronze.webp" alt="">
+          <span>BRONZE</span>
+        </div>
+        <div data-value="8" class="elo">
+          <img src="images/prata.webp" alt="">
+          <span>PRATA</span>
+        </div>
+        <div data-value="12" class="elo">
+          <img src="images/ouro.webp" alt="">
+          <span>OURO</span>
+        </div>
+        <div data-value="16" class="elo">
+          <img src="images/platina.webp" alt="">
+          <span>PLATINA</span>
+        </div>
+        <div data-value="20" class="elo">
+          <img src="images/esmeralda.webp" alt="">
+          <span>ESMERALDA</span>
+        </div>
+        <div data-value="24" class="elo">
+          <img src="images/diamante.webp" alt="">
+          <span>DIAMANTE</span>
+        </div>
+        <div data-value="28" class="elo">
+          <img src="images/mestre.webp" alt="">
+          <span>MESTRE</span>
+        </div>
+        <div data-value="29" class="elo">
+          <img src="images/graomestre.webp" alt="">
+          <span style="margin-top: -12px">GRÃO-MESTRE</span>
+        </div>
+      </div>
+      <span class="span_division">Selecione a divisão</span>
+      <div class="grid_elos divisions">
+        <div class="container_division" data-value="3"><span >I</span></div>
+        <div class="container_division" data-value="2"><span >II</span></div>
+        <div class="container_division" data-value="1"><span >III</span></div>
+        <div class="container_division" data-value="0"><span >IV</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="container_choose_your_elo_second">
+    <div class="choose_different_elos">
+      <span>Selecione o seu elo:</span>
+      <hr>
+      <div class="grid_elos">
+        <div data-value="0" class="elo2">
+          <img src="images/ferro.webp" alt="">
+          <span>FERRO</span>
+        </div>
+        <div data-value="4" class="elo2">
+          <img src="images/bronze.webp" alt="">
+          <span>BRONZE</span>
+        </div>
+        <div data-value="8" class="elo2">
+          <img src="images/prata.webp" alt="">
+          <span>PRATA</span>
+        </div>
+        <div data-value="12" class="elo2">
+          <img src="images/ouro.webp" alt="">
+          <span>OURO</span>
+        </div>
+        <div data-value="16" class="elo2">
+          <img src="images/platina.webp" alt="">
+          <span>PLATINA</span>
+        </div>
+        <div data-value="20" class="elo2">
+          <img src="images/esmeralda.webp" alt="">
+          <span>ESMERALDA</span>
+        </div>
+        <div data-value="24" class="elo2">
+          <img src="images/diamante.webp" alt="">
+          <span>DIAMANTE</span>
+        </div>
+        <div data-value="28" class="elo2">
+          <img src="images/mestre.webp" alt="">
+          <span>MESTRE</span>
+        </div>
+        <div data-value="29" class="elo2">
+          <img src="images/graomestre.webp" alt="">
+          <span style="margin-top: -12px">GRÃO-MESTRE</span>
+        </div>
+        <div data-value="30" class="elo2">
+          <img src="images/challenger.webp" alt="">
+          <span style="margin-top: -12px">CHALLENGER</span>
+        </div>
+      </div>
+      <span class="span_division2">Selecione a divisão</span>
+      <div class="grid_elos divisions">
+        <div class="container_division2" data-value="3"><span >I</span></div>
+        <div class="container_division2" data-value="2"><span >II</span></div>
+        <div class="container_division2" data-value="1"><span >III</span></div>
+        <div class="container_division2" data-value="0"><span >IV</span></div>
+      </div>
+    </div>
+  </div>
   <script src="./index.js"></script>
 </body>
 
