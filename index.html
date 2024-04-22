@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <select onchange="HandleValueToPayForJob()" name="eloToStart" id="eloToStart">
+    <option value="1">ferro</option>
+    <option value="5">bronze</option>
+    <option value="9">prata</option>
+    <option value="13">ouro</option>
+    <option value="17">platina</option>
+    <option value="21">esmeralda</option>
+    <option value="25">diamente</option>
+    <option value="29">mestre</option>
+    <option value="30">grao-mestre</option>
+    <option value="31">challenger</option>
+  </select>
+  <select onchange="HandleValueToPayForJob()" name="divisionToStart" id="divisionToStart">
+    <option value="0">IV</option>
+    <option value="1">III</option>
+    <option value="2">II</option>
+    <option value="3">I</option>
+  </select>
+  <select onchange="HandleValueToPayForJob()" name="eloToEnd" id="eloToEnd">
+    <option value="0">ferro</option>
+    <option value="4">bronze</option>
+    <option value="8">prata</option>
+    <option value="12">ouro</option>
+    <option value="16">platina</option>
+    <option value="20">esmeralda</option>
+    <option value="24">diamente</option>
+    <option value="28">mestre</option>
+    <option value="29">grao-mestre</option>
+    <option value="30">challenger</option>
+  </select>
+  <select onchange="HandleValueToPayForJob()" name="divisionToEnd" id="divisionToEnd">
+    <option value="0">IV</option>
+    <option value="1">III</option>
+    <option value="2">II</option>
+    <option value="3">I</option>
+  </select>
+  <span id="FinalValue">0</span>
+  <script src="./index.js"></script>
+</body>
+
+</html>
